@@ -23,21 +23,15 @@ from PIL import Image
 from sam2.build_sam import build_sam2_video_predictor
 
 # Description
-title = "<center><strong><font size='8'>Edge Track Anything (EdgeTAM)<font></strong></center>"
+title = "<center><strong><font size='8'>EdgeTAM<font></strong> <a href='https://github.com/facebookresearch/EdgeTAM'><font size='6'>[GitHub]</font></a> </center>"
 
-description_e = """This is a demo of [Edge Track Anything (EdgeTAM) Model](https://github.com/facebookresearch/EdgeTAM).
-              """
-
-description_p = """# Interactive Video Segmentation
-                - Built our demo based on [SAM2-Video-Predictor](https://huggingface.co/spaces/fffiloni/SAM2-Video-Predictor). Thanks to Sylvain Filoni.
-                - Instruction
+description_p = """# Instructions
                 <ol>
                 <li> Upload one video or click one example video</li>
                 <li> Click 'include' point type, select the object to segment and track</li>
                 <li> Click 'exclude' point type (optional), select the area you want to avoid segmenting and tracking</li>
                 <li> Click the 'Track' button to obtain the masked video </li>
                 </ol>
-                - Github [link](https://github.com/facebookresearch/EdgeTAM)
               """
 
 # examples
@@ -75,7 +69,12 @@ examples = [
 
 OBJ_ID = 0
 
-DEVICE = "mps"
+if torch.backends.mps.is_available():
+    DEVICE = "mps"
+elif torch.cuda.is_available():
+    DEVICE = "cuda"
+else:
+    DEVICE = "cpu"
 sam2_checkpoint = "checkpoints/edgetam.pt"
 model_cfg = "edgetam.yaml"
 predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=DEVICE)
@@ -84,11 +83,12 @@ print("PREDICTOR LOADED")
 torch.autocast(device_type=DEVICE, dtype=torch.float16).__enter__()
 
 # use bfloat16 for the entire notebook
-# torch.autocast(device_type=DEVICE, dtype=torch.bfloat16).__enter__()
-# if torch.cuda.get_device_properties(0).major >= 8:
-#     # turn on tfloat32 for Ampere GPUs (https://pytorch.org/docs/stable/notes/cuda.html#tensorfloat-32-tf32-on-ampere-devices)
-#     torch.backends.cuda.matmul.allow_tf32 = True
-#     torch.backends.cudnn.allow_tf32 = True
+if torch.cuda.is_available():
+    torch.autocast(device_type=DEVICE, dtype=torch.bfloat16).__enter__()
+    if torch.cuda.get_device_properties(0).major >= 8:
+        # turn on tfloat32 for Ampere GPUs (https://pytorch.org/docs/stable/notes/cuda.html#tensorfloat-32-tf32-on-ampere-devices)
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
 
 
 def get_video_fps(video_path):

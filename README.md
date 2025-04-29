@@ -7,7 +7,7 @@
 [Fanyi Xiao<sup>1</sup>](https://fanyix.cs.ucdavis.edu/),
 [Lemeng Wu<sup>1</sup>](https://sites.google.com/view/lemeng-wu/home),
 [Raghuraman Krishnamoorthi<sup>1</sup>](https://scholar.google.com/citations?user=F1mr9C0AAAAJ&hl=en),
-[Bo Dai<sup>3</sup>](https://daibo.info/),
+[Bo Dai<sup>3,4</sup>](https://daibo.info/),
 [Chen Change Loy<sup>2</sup>](https://www.mmlab-ntu.com/person/ccloy/),
 [Vikas Chandra<sup>1</sup>](https://v-chandra.github.io/),
 [Bilge Soran<sup>1</sup>](https://scholar.google.com/citations?user=9nXD6pwAAAAJ&hl=en),
@@ -15,10 +15,11 @@
 <sup>1</sup>Meta Reality Labs,
 <sup>2</sup>S-Lab, Nanyang Technological University,
 <sup>3</sup>University of Hong Kong
+<sup>4</sup>Feeling AI
 
 (*) Work done during the internship at Meta Reality Labs.
 
-[[`Paper`](https://arxiv.org/abs/2501.07256)] [[`BibTeX`](#citing-edgetam)]
+[[`Paper`](https://arxiv.org/abs/2501.07256)] [[`Demo`](https://huggingface.co/spaces/chongzhou/EdgeTAM)] [[`BibTeX`](#citing-edgetam)]
 
 
 ## Overview
@@ -61,6 +62,7 @@ Note:
 Model is available [here](https://github.com/facebookresearch/EdgeTAM/tree/main/checkpoints/edgetam.pt).
 
 ### On-device Gradio demo for EdgeTAM
+Follow the instructions below to run the on-device demo for EdgeTAM. If you want to quickly try out the demo, you can also go to [Hugging Face Spaces](https://huggingface.co/spaces/chongzhou/EdgeTAM).
 
 Install the dependencies for the Gradio demo:
 
