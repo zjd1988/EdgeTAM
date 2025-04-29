@@ -10,11 +10,11 @@
 [Bo Dai<sup>3,4</sup>](https://daibo.info/),
 [Chen Change Loy<sup>2</sup>](https://www.mmlab-ntu.com/person/ccloy/),
 [Vikas Chandra<sup>1</sup>](https://v-chandra.github.io/),
-[Bilge Soran<sup>1</sup>](https://scholar.google.com/citations?user=9nXD6pwAAAAJ&hl=en),
+[Bilge Soran<sup>1</sup>](https://scholar.google.com/citations?user=9nXD6pwAAAAJ&hl=en)
 
 <sup>1</sup>Meta Reality Labs,
 <sup>2</sup>S-Lab, Nanyang Technological University,
-<sup>3</sup>University of Hong Kong
+<sup>3</sup>University of Hong Kong,
 <sup>4</sup>Feeling AI
 
 (*) Work done during the internship at Meta Reality Labs.
