@@ -1,8 +1,36 @@
 # EdgeTAM: On-Device Track Anything Model
 
+[Chong Zhou<sup>1,2*</sup>](https://chongzhou96.github.io/),
+[Chenchen Zhu<sup>1</sup>](https://sites.google.com/andrew.cmu.edu/zcckernel/home),
+[Yunyang Xiong<sup>1</sup>](https://pages.cs.wisc.edu/~yunyang/),
+[Saksham Suri<sup>1</sup>](https://www.cs.umd.edu/~sakshams/),
+[Fanyi Xiao<sup>1</sup>](https://fanyix.cs.ucdavis.edu/),
+[Lemeng Wu<sup>1</sup>](https://sites.google.com/view/lemeng-wu/home),
+[Raghuraman Krishnamoorthi<sup>1</sup>](https://scholar.google.com/citations?user=F1mr9C0AAAAJ&hl=en),
+[Bo Dai<sup>3</sup>](https://daibo.info/),
+[Chen Change Loy<sup>2</sup>](https://www.mmlab-ntu.com/person/ccloy/),
+[Vikas Chandra<sup>1</sup>](https://v-chandra.github.io/),
+[Bilge Soran<sup>1</sup>](https://scholar.google.com/citations?user=9nXD6pwAAAAJ&hl=en),
+
+<sup>1</sup>Meta Reality Labs,
+<sup>2</sup>S-Lab, Nanyang Technological University,
+<sup>3</sup>University of Hong Kong
+
+(*) Work done during the internship at Meta Reality Labs.
 
 [[`Paper`](https://arxiv.org/abs/2501.07256)] [[`BibTeX`](#citing-edgetam)]
 
+
+## Overview
+
+**EdgeTAM** is an on-device executable variant of the SAM 2 for promptable segmentation and tracking in videos.
+It runs **22× faster** than SAM 2 and achieves **16 FPS** on iPhone 15 Pro Max without quantization.
+
+<p align="center">
+  <img src="assets/speed-performance.png?raw=true" width="400"/>
+</p>
+
+*In this figure, we show the speed-performance trade-offs of EdgeTAM and other models on iPhone 15 Pro Max (red) and NVIDIA A100 (blue). We report the J&F on the SA-V val dataset as the evaluation metric.*
 
 ## Installation
 
@@ -27,6 +55,10 @@ Note:
 
 
 ## Getting Started
+
+### Downloading the model
+
+Model is available [here](https://github.com/facebookresearch/EdgeTAM/tree/main/checkpoints/edgetam.pt).
 
 ### On-device Gradio demo for EdgeTAM
 
@@ -91,6 +123,44 @@ with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
 
 Please refer to the examples in [video_predictor_example.ipynb](./notebooks/video_predictor_example.ipynb) for details on how to add click or box prompts, make refinements, and track multiple objects in videos.
 
+## Performance
+### Promptable Video Segmentation (PVS)
+<p align="center">
+  <img src="assets/pvs.png?raw=true" width="700"/>
+</p>
+
+*Zero-shot PVS accuracy across 9 datasets in offline and online settings.*
+
+### Video Object Segmentation (VOS)
+| Method         | MOSE val | DAVIS 2017 val | SA-V val | SA-V test | YTVOS 2019 val | A100  | V100  | iPhone |
+|----------------|----------|----------------|----------|-----------|----------------|-------|-------|--------|
+| STCN           | 52.5     | 85.4           | 61.0     | 62.5      | 82.7           | 62.8  | 13.2  | -      |
+| SwinB-AOT      | 59.4     | 85.4           | 51.1     | 50.3      | 84.5           | -     | -     | -      |
+| SwinB-DeAOT    | 59.9     | 86.2           | 61.4     | 61.8      | 86.1           | -     | -     | -      |
+| RDE            | 46.8     | 84.2           | 51.8     | 53.9      | 81.9           | 88.8  | 24.4  | -      |
+| XMem           | 59.6     | 86.0           | 60.1     | 62.3      | 85.6           | 61.2  | 22.6  | -      |
+| SimVOS-B       | -        | 88.0           | 44.2     | 44.1      | 84.2           | -     | 3.3   | -      |
+| JointFormer    | -        | 90.1           | -        | -         | 87.4           | -     | 3.0   | -      |
+| ISVOS          | -        | 88.2           | -        | -         | 86.3           | -     | 5.8   | -      |
+| DEVA           | 66.0     | 87.0           | 55.4     | 56.2      | 85.4           | 65.2  | 25.3  | -      |
+| Cutie-base     | 69.9     | 87.9           | 60.7     | 62.7      | 87.0           | 65.0  | 36.4  | -      |
+| Cutie-base+    | 71.7     | 88.1           | 61.3     | 62.8      | 87.5           | 57.2  | 17.9  | -      |
+| SAM 2-B+       | 75.8     | **90.9**       | 73.6     | 74.1      | 88.4           | 64.8  | -     | 0.7    |
+| SAM 2.1-B+     | **76.6** | 90.2           | **76.8** | **77.0**  | **88.6**       | 64.1  | -     | 0.7    |
+| **EdgeTAM**    | 70.0     | 87.7           | 72.3     | 71.7      | 86.2           | **150.9** | - | **15.7** |
+
+*We report the G for YTVOS and J&F for other datasets. The FPS on A100 is obtained with torch compile. Nota that, for SAM 2, SAM 2.1, and EdgeTAM, we evaluate all the datasets with the same model.*
+
+### Segment Anything (SA)
+| Model    | Data        | SA-23 All        | SA-23 Image      | SA-23 Video      | FPS   |
+|----------|-------------|------------------|------------------|------------------|-------|
+| SAM      | SA-1B       | 58.1 (81.3)      | 60.8 (82.1)      | 54.5 (80.3)      | -     |
+| SAM 2    | SA-1B       | 58.9 (81.7)      | 60.8 (82.1)      | 56.4 (81.2)      | 1.3   |
+| SAM 2    | SAM2’s mix  | 61.4 (83.7)      | 63.1 (83.9)      | 59.1 (83.3)      | 1.3   |
+| SAM 2.1  | SAM2’s mix  | **61.9 (83.5)**  | **63.3 (83.8)**  | **60.1 (83.2)**  | 1.3   |
+| **EdgeTAM** | Our mix  | 55.5 (81.7)      | 56.0 (81.9)      | 54.8 (81.5)      | **40.4** |
+
+*We report 1 (5) click mIoU results. FPS is measured on iPhone 15 Pro Max. Our mix does not contain the internal datasets that SAM 2 uses.*
 
 ## License
 
