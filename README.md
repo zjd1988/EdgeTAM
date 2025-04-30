@@ -19,7 +19,7 @@
 
 (*) Work done during the internship at Meta Reality Labs.
 
-[[`Paper`](https://arxiv.org/abs/2501.07256)] [[`Demo`](https://huggingface.co/spaces/chongzhou/EdgeTAM)] [[`BibTeX`](#citing-edgetam)]
+[[`Paper`](https://arxiv.org/abs/2501.07256)] [[`Demo`](https://huggingface.co/spaces/facebook/EdgeTAM)] [[`BibTeX`](#citing-edgetam)]
 
 
 ## Overview
@@ -62,7 +62,7 @@ Note:
 Model is available [here](https://github.com/facebookresearch/EdgeTAM/tree/main/checkpoints/edgetam.pt).
 
 ### On-device Gradio demo for EdgeTAM
-Follow the instructions below to run the on-device demo for EdgeTAM. If you want to quickly try out the demo, you can also go to [Hugging Face Spaces](https://huggingface.co/spaces/chongzhou/EdgeTAM).
+Follow the instructions below to run the on-device demo for EdgeTAM. If you want to quickly try out the demo, you can also go to [Hugging Face Spaces](https://huggingface.co/spaces/facebook/EdgeTAM).
 
 Install the dependencies for the Gradio demo:
 

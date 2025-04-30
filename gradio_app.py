@@ -80,8 +80,6 @@ model_cfg = "edgetam.yaml"
 predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint, device=DEVICE)
 print("PREDICTOR LOADED")
 
-torch.autocast(device_type=DEVICE, dtype=torch.float16).__enter__()
-
 # use bfloat16 for the entire notebook
 if torch.cuda.is_available():
     torch.autocast(device_type=DEVICE, dtype=torch.bfloat16).__enter__()
